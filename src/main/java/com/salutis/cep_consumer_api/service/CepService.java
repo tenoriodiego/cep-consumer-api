@@ -1,5 +1,9 @@
 package com.salutis.cep_consumer_api.service;
 
-public class CepService {
+import com.salutis.cep_consumer_api.dto.CepResponseDTO;
+
+public interface CepService {
+
+    CepResponseDTO buscarCep(String cep);
     
 }
