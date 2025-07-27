@@ -1,12 +1,7 @@
 {
   "cep": "07152-786",
   "logradouro": "Rua Porto Alegre",
-  "complemento": "lado ímpar",
   "bairro": "Jardim das Oliveiras I",
   "localidade": "Guarulhos",
-  "uf": "SP",
-  "ibge": "3550308",
-  "gia": "1004",
-  "ddd": "11",
-  "siafi": "7107"
+  "uf": "SP"
 }

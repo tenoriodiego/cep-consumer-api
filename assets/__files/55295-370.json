@@ -1,12 +1,7 @@
 {
   "cep": "55295-370",
   "logradouro": "Rua Carlos Gomes",
-  "complemento": "lado par",
   "bairro": "Magano",
   "localidade": "Garanhuns",
-  "uf": "PE",
-  "ibge": "3550308",
-  "gia": "1004",
-  "ddd": "11",
-  "siafi": "7107"
+  "uf": "PE"
 }

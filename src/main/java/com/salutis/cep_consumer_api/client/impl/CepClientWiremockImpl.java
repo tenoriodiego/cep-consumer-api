@@ -26,7 +26,7 @@ public CepResponseDTO buscarCep(String cep) {
     try {
         return restTemplate.getForObject(url, CepResponseDTO.class);
     } catch (HttpClientErrorException.NotFound e) {
-        throw new CepNotFoundException(); // <- Aqui o ExceptionHandler age
+        throw new CepNotFoundException(cep); 
     }
 }
 

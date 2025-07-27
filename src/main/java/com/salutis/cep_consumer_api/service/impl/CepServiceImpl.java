@@ -1,43 +1,63 @@
 package com.salutis.cep_consumer_api.service.impl;
 
-import java.util.regex.Pattern;
+import java.time.LocalDateTime;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.salutis.cep_consumer_api.client.CepClient;
 import com.salutis.cep_consumer_api.dto.CepResponseDTO;
+import com.salutis.cep_consumer_api.exception.CampoVazioException;
 import com.salutis.cep_consumer_api.exception.CepNotFoundException;
+import com.salutis.cep_consumer_api.model.ConsultaLog;
+import com.salutis.cep_consumer_api.repository.ConsultaLogRepository;
 import com.salutis.cep_consumer_api.service.CepService;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CepServiceImpl implements CepService {
 
-    private final RestTemplate restTemplate;
-    private final Pattern cepPattern = Pattern.compile("^\\d{5}-\\d{3}$");
-
-    public CepServiceImpl(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
+    private final CepClient cepClient;
+    private final ObjectMapper objectMapper;
+    private final ConsultaLogRepository consultaLogRepository;
 
     @Override
     public CepResponseDTO buscarCep(String cep) {
-        if (cep == null || cep.isBlank()) {
-            throw new IllegalArgumentException("CEP não pode estar vazio.");
+        if (cep == null || cep.isEmpty() || cep.isBlank()) {
+            salvarLog(cep, "CEP vazio");
+            throw new CampoVazioException("CEP não pode ser vazio");
         }
-
-        if (!cepPattern.matcher(cep).matches()) {
-            throw new IllegalArgumentException("CEP inválido. Use o formato 99999-999.");
-        }
-
-        String url = "http://localhost:8089/ws/" + cep + "/json/";
 
         try {
-            ResponseEntity<CepResponseDTO> response = restTemplate.getForEntity(url, CepResponseDTO.class);
-            return response.getBody();
-        } catch (HttpClientErrorException.NotFound e) {
-            throw new CepNotFoundException();
+            CepResponseDTO response = cepClient.buscarCep(cep);
+
+            String resultadoJson = objectMapper.writeValueAsString(response);
+            salvarLog(cep, resultadoJson);
+
+            return response;
+        } catch (CepNotFoundException e) {
+            salvarLog(cep, "CEP não encontrado");
+            throw e; // deixa a exceção subir
+        } catch (Exception e) {
+            salvarLog(cep, "Erro inesperado: " + e.getMessage());
+            throw new RuntimeException("Erro ao consultar CEP", e);
         }
     }
+
+    private void salvarLog(String cep, String resultado) {
+        ConsultaLog log = ConsultaLog.builder()
+            .cep(cep)
+            .resultado(resultado)
+            .dataHora(LocalDateTime.now())
+            .build();
+
+        consultaLogRepository.save(log);
+    }
 }
+
+
+
+
+
