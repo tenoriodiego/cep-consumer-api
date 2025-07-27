@@ -1,0 +1,14 @@
+{
+  "priority": 1,
+  "request": {
+    "method": "GET",
+    "urlPath": "/ws/55295-370/json/"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "55295-370.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

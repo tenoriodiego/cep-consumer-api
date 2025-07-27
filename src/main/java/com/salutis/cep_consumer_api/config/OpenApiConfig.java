@@ -1,5 +1,5 @@
-package com.salutis.cep_consumer_api.config;
+// package com.salutis.cep_consumer_api.config;
 
-public class OpenApiConfig {
+// public class OpenApiConfig {
     
-}
+// }

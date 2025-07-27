@@ -1,0 +1,14 @@
+{
+  "priority": 1,
+  "request": {
+    "method": "GET",
+    "urlPath": "/ws/01001-000/json/"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "01001-000.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
