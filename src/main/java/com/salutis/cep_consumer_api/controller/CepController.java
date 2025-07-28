@@ -10,11 +10,11 @@ import com.salutis.cep_consumer_api.dto.CepResponseDTO;
 import com.salutis.cep_consumer_api.exception.CepNotFoundException;
 import com.salutis.cep_consumer_api.service.CepService;
 
-// import lombok.RequiredArgsConstructor;
+
 
 @RestController
 @RequestMapping("/api/cep")
-// @RequiredArgsConstructor
+
 public class CepController {
 
     private final CepService cepService;
